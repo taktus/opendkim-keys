@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  roles:
+    - role: opendkim
+      vars:
+        - opendkim_domains:
+          - name: example.com
+            
+              
+

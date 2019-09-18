@@ -1,0 +1,16 @@
+---
+# defaults file for opendkim
+#
+opendkim_conf_folder: /etc/opendkim
+opendkim_keys_folder: /etc/opendkim/keys
+opendkim_genkey:      /usr/bin/opendkim-genkey
+opendkim_key_bits:    2048
+
+
+opendkim_domains:  []
+opendkim_domain_selector: default
+opendkim_domain_state: present
+
+opendkim_cf: false
+opendkim_cf_api_token: ""
+opendkim_cf_mail: ""

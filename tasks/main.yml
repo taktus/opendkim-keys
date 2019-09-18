@@ -1,0 +1,88 @@
+---
+# tasks file for opendkim
+#
+
+- name: Opendkim TrustedHosts file
+  copy:
+    content: ""
+    dest: "{{ opendkim_conf_folder }}/TrustedHosts"
+    force: no
+    owner: opendkim
+    mode: 0644
+
+- name: Opendkim KeyTable file
+  copy:
+    content: ""
+    dest: "{{ opendkim_conf_folder }}/KeyTable"
+    force: no        
+    owner: opendkim
+    mode: 0644
+
+- name: Opendkim SingingTable file
+  copy:
+    content: ""
+    dest: "{{ opendkim_conf_folder }}/SigningTable"
+    force: no        
+    owner: opendkim
+    mode: 0644
+
+- name: Generate keys subfolders
+  file:
+     path: "{{ opendkim_keys_folder }}/{{ item.name }}"
+     state: directory
+     owner: opendkim
+     mode: 0700
+  with_flattened:
+     - "{{ opendkim_domains }}"
+  when: ( item.state is defined and item.state != 'absent' ) or ( item.state is undefined and opendkim_domain_state != 'absent' )
+
+- name: Find opendkim-genkey executable
+  shell: "which opendkim-genkey"
+  register: the_genkey
+  ignore_errors: true
+
+- fail:
+    msg: "opendkim-genkey not found! You need to install it first."
+  when: the_genkey.rc != 0
+
+- name: Generate signing keys
+  shell: "{{ the_genkey.stdout  }} -s {{ item.selector | default(opendkim_domain_selector) }} -d {{ item.name }} -b {{ item.key_bits | default(opendkim_key_bits) }} -D {{ opendkim_keys_folder }}/{{ item.name }}"
+  args:
+    creates: "{{ opendkim_keys_folder }}/{{ item.name }}/{{ item.selector | default(opendkim_domain_selector) }}.private"
+  with_flattened:
+     - "{{ opendkim_domains }}"
+  when: ( item.state is defined and item.state != 'absent' ) or ( item.state is undefined and opendkim_domain_state != 'absent' )
+
+- name: Key files ownership
+  file: 
+    path: "{{ opendkim_keys_folder }}/{{ item.name }}"
+    recurse: true        
+    owner: opendkim        
+  with_flattened:
+     - "{{ opendkim_domains }}"
+  when: ( item.state is defined and item.state != 'absent' ) or ( item.state is undefined and opendkim_domain_state != 'absent' )
+
+- name: Insert keys into KeyTable
+  lineinfile: 
+    path: "{{ opendkim_conf_folder }}/KeyTable"
+    regex: "^{{ item.selector | default(opendkim_domain_selector) }}._domainkey.{{ item.name }}"        
+    line: "{{ item.selector | default(opendkim_domain_selector) }}._domainkey.{{ item.name }} {{ item.name }}:{{ item.selector | default(opendkim_domain_selector) }}:{{ opendkim_keys_folder}}/{{ item.name }}/{{ item.selector | default(opendkim_domain_selector) }}.private"
+    state: "{{ item.state | default(opendkim_domain_state) }}"        
+  with_flattened:
+     - "{{ opendkim_domains }}"
+
+- name: Insert keys into SigningTable
+  lineinfile: 
+    path: "{{ opendkim_conf_folder }}/SigningTable"
+    line: "*@{{ item.name }} {{ item.selector | default(opendkim_domain_selector) }}._domainkey.{{ item.name }}"
+    state: "{{ item.state | default(opendkim_domain_state) }}"        
+  with_flattened:
+     - "{{ opendkim_domains }}"
+
+#
+# cloudflate
+#
+- name: cloudflare integration enabled
+  include_tasks: cf_integration.yml
+  when: (opendkim_cf | bool)
+ 

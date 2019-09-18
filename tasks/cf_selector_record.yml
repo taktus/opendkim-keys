@@ -1,0 +1,68 @@
+---
+
+- name: preporcess txt record
+  debug:
+    msg: "{{ item}}"
+  tags:
+    - debug   
+    - never
+
+- set_fact:
+    tmp_domain: "{{ item.stdout | regex_replace( opendkim_keys_folder , '') }}"
+
+- debug: msg={{ tmp_domain }}
+  tags:
+    - debug   
+    - never
+
+- set_fact:
+    the_domain: "{{ tmp_domain.split('/')[1] | lower }}"
+
+- debug: msg={{ the_domain }}
+  tags:
+    - debug   
+    - never
+
+- name: prepare TXT record selector
+  shell: cat "{{ item.stdout}}" | cut -f1
+  register: record_selector
+
+- debug: var=record_selector.stdout_lines      
+  tags:
+    - debug   
+    - never
+            
+- name: prerepare TXT record value
+  shell: cat "{{ item.stdout}}" | tr -d '\n[:space:]' | cut -d'"' -f2,3,4 | tr -d '"'
+  register: record_value
+
+- debug: var=record_value.stdout      
+  tags:
+    - debug
+    - never
+
+- debug: var=the_domain
+  tags:
+    - debug
+    - never
+
+- debug: var=record_selector.stdout 
+  tags:
+    - debug
+    - never
+
+- debug: var=record_value.stdout
+  tags:
+    - debug   
+    - never
+
+- name: update TXT record in Cloudflare 
+  cloudflare_dns:
+    account_email: "{{ opendkim_cf_mail }}"
+    account_api_token: "{{ opendkim_cf_api_token }}"
+    zone: "{{ the_domain }}"
+    record: "{{ record_selector.stdout }}"
+    value:  "{{ record_value.stdout }}"
+    type: TXT
+    state: present
+    solo: yes
