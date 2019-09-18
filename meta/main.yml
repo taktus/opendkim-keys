@@ -1,4 +1,3 @@
-galaxy_info:
   author: Marek Krasnowski
   description: Configure dkim keys and KeyTable and SingingKeys (opendkim)a for give list of domains. If enabled DNS TXT records can be added to Cloudflare DNS service
 
@@ -15,7 +14,7 @@ galaxy_info:
   # - GPL-3.0-only
   # - Apache-2.0
   # - CC-BY-4.0
-  
+
   license: BSD-3-Clause
 
   min_ansible_version: 2.7
@@ -48,10 +47,9 @@ galaxy_info:
     - name: Ubuntu
       versions:
       - 16.04
-     
-     
+
     # galaxy_tags: []
-     
+
     # List tags for your role here, one per line. A tag is a keyword that describes
     # and categorizes the role. Users find roles by searching for tags. Be sure to
     # remove the '[]' above, if you add tags to this list.
@@ -59,7 +57,7 @@ galaxy_info:
     # NOTE: A tag is limited to a single word comprised of alphanumeric characters.
     #       Maximum 20 tags per role.
 
-  galaxy_tags: 
+  galaxy_tags:
    - openkim
    - cloudflare
 
@@ -67,4 +65,4 @@ galaxy_info:
 
   # List your role dependencies here, one per line. Be sure to remove the '[]' above,
   # if you add dependencies to this list.
-  
+galaxy_info:
