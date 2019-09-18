@@ -1,3 +1,4 @@
+galaxy_info:
   author: Marek Krasnowski
   description: Configure dkim keys and KeyTable and SingingKeys (opendkim)a for give list of domains. If enabled DNS TXT records can be added to Cloudflare DNS service
 
@@ -66,4 +67,3 @@
   # List your role dependencies here, one per line. Be sure to remove the '[]' above,
   # if you add dependencies to this list.
   
-  galaxy_info: []
