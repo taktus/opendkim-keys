@@ -26,4 +26,3 @@
   include_tasks: cf_selector_record.yml
   with_flattened: "{{ files_matched.results }}"
   when: (item.changed and  opendkim_cf | bool)
-  
