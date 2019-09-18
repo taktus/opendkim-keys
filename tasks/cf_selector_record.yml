@@ -2,9 +2,9 @@
 
 - name: preporcess txt record
   debug:
-    msg: "{{ item}}"
+    msg: "{{ item }}"
   tags:
-    - debug   
+    - debug
     - never
 
 - set_fact:
@@ -12,7 +12,7 @@
 
 - debug: msg={{ tmp_domain }}
   tags:
-    - debug   
+    - debug
     - never
 
 - set_fact:
@@ -20,23 +20,23 @@
 
 - debug: msg={{ the_domain }}
   tags:
-    - debug   
+    - debug
     - never
 
 - name: prepare TXT record selector
-  shell: cat "{{ item.stdout}}" | cut -f1
+  shell: cat "{{ item.stdout }}" | cut -f1
   register: record_selector
 
-- debug: var=record_selector.stdout_lines      
+- debug: var=record_selector.stdout_lines
   tags:
-    - debug   
+    - debug
     - never
-            
+
 - name: prerepare TXT record value
-  shell: cat "{{ item.stdout}}" | tr -d '\n[:space:]' | cut -d'"' -f2,3,4 | tr -d '"'
+  shell: cat "{{ item.stdout }}" | tr -d '\n[:space:]' | cut -d'"' -f2,3,4 | tr -d '"'
   register: record_value
 
-- debug: var=record_value.stdout      
+- debug: var=record_value.stdout
   tags:
     - debug
     - never
@@ -46,17 +46,17 @@
     - debug
     - never
 
-- debug: var=record_selector.stdout 
+- debug: var=record_selector.stdout
   tags:
     - debug
     - never
 
 - debug: var=record_value.stdout
   tags:
-    - debug   
+    - debug
     - never
 
-- name: update TXT record in Cloudflare 
+- name: update TXT record in Cloudflare
   cloudflare_dns:
     account_email: "{{ opendkim_cf_mail }}"
     account_api_token: "{{ opendkim_cf_api_token }}"
