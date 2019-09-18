@@ -1,14 +1,13 @@
 Role Name
 =========
 
-Configure dkim keys and KeyTable and SingingKeys (opendkim)
-The role can be used to add or remove dmim keys for the domains specified in the opendkim_domians
-
+Configure dkim keys and KeyTable and SingingKeys (opendkim)a for give list of domains
+If enabled DNS TXT records can be added to Cloudflare DNS service
 
 Requirements
 ------------
 
-The role is not designed to configure opendkim packet, it assumes opendkim is installed and configured properly
+The role is not designed to configure opendkim packet, it assumes opendkim is installed and configured
 and opendkim daemon works properly 
 
 
@@ -21,11 +20,13 @@ opendkim_domains:    - the dictionary containing domains           - default []
 
 the dictionary of the domains should look like:
 
+```
 opendkim_domains:
    - name: 
      selector: 
      state: 
      bits:
+```
 
 where:
 
@@ -36,8 +37,8 @@ opendkim_key_bits        - number of bits used to generate keys        - default
 
 Cloudflare integration 
 
-The role is able to update Cloudflare DNS TXT records automatially exporting the value of public key generatED
-To enable CF integration functrionality the following variables has to be defined
+The role is able to update Cloudflare DNS TXT records automatially exporting the value of public keys generated
+To enable CF integration functionality the following variables has to be defined:
 
 opendkim_cf  - must be equal to yes
 opendkim_cf_mail - has to be set to email address used by CF API
@@ -49,16 +50,16 @@ for detaiuls see https://docs.ansible.com/ansible/latest/modules/cloudflare_dns_
 Dependencies
 ------------
 
-none
+- none
 
 Example Playbook
 ----------------
 
 Basic usage
-
-    - hosts: servers
+```
+    - hosts: mailserver
       roles:
-         - role: fenixx3000/opendkim
+         - role: taktus/opendkim-keys
            vars:
              - opendkin_cf: no
              - opendkim_domains:
@@ -68,13 +69,13 @@ Basic usage
                - name: foo.bar
                  selector: mail
                  state: absent
-
+```
 
 Cloudflare integration
-
-    - hosts: servers
+```
+    - hosts: mailserver
       roles:
-         - role: fenixx3000/opendkim
+         - role: taktus/opendkim-keys
            vars:
              - opendkin_cf: yes
              - opendkim_cf_api_token: 1234567890abcdef
@@ -86,14 +87,14 @@ Cloudflare integration
                - name: foo.bar
                  selector: mail
                  state: absent
-
+```
 
 License
 -------
 
-GPL-2.0-or-late
+BSD
 
 Author Information
 ------------------
 
-MarQ from https://lanprojekt.com.pl
+MarQ (lan projekt)  https://lp.net.pl
