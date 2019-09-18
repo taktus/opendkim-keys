@@ -42,7 +42,8 @@
   register: the_genkey
   ignore_errors: true
 
-- fail:
+- name: FAIL if opendkim-genkey not found!
+  fail:
     msg: "opendkim-genkey not found! You need to install it first."
   when: the_genkey.rc != 0
 
@@ -70,7 +71,7 @@
   lineinfile:
     path: "{{ opendkim_conf_folder }}/KeyTable"
     regex: "^{{ item.selector | default(opendkim_domain_selector) }}._domainkey.{{ item.name }}"
-    line: "{{ item.selector | default(opendkim_domain_selector) }}._domainkey.{{ item.name }} {{ item.name }}:{{ item.selector | default(opendkim_domain_selector) }}:{{ opendkim_keys_folder}}/{{ item.name }}/{{ item.selector | default(opendkim_domain_selector) }}.private"
+    line: "{{ item.selector | default(opendkim_domain_selector) }}._domainkey.{{ item.name }} {{ item.name }}:{{ item.selector | default(opendkim_domain_selector) }}:{{ opendkim_keys_folder }}/{{ item.name }}/{{ item.selector | default(opendkim_domain_selector) }}.private"
     state: "{{ item.state | default(opendkim_domain_state) }}"
   with_flattened:
      - "{{ opendkim_domains }}"

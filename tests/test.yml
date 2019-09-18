@@ -5,6 +5,3 @@
       vars:
         - opendkim_domains:
           - name: example.com
-            
-              
-

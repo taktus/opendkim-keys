@@ -10,7 +10,7 @@
 - set_fact:
     tmp_domain: "{{ item.stdout | regex_replace( opendkim_keys_folder , '') }}"
 
-- name: debug domain 
+- name: debug domain
   debug: msg={{ tmp_domain }}
   tags:
     - debug
@@ -24,7 +24,7 @@
   register: record_selector
 
 - name: debug domain selector
-  debug: 
+  debug:
     msg: "{{ record_selector.stdout_lines }}"
   tags:
     - debug
@@ -38,22 +38,16 @@
     executable: /bin/bash
   register: record_value
 
-- debug: var=record_value.stdout
+- name: debug the domain
+  debug: 
+    msg: " {{ the_domain}}
   tags:
     - debug
     - never
 
-- debug: var=the_domain
-  tags:
-    - debug
-    - never
-
-- debug: var=record_selector.stdout
-  tags:
-    - debug
-    - never
-
-- debug: var=record_value.stdout
+- name: debug record_value.stdout
+  debug: 
+    msg: "{{ record_value.stdout }}"
   tags:
     - debug
     - never
