@@ -10,7 +10,8 @@
 - set_fact:
     tmp_domain: "{{ item.stdout | regex_replace( opendkim_keys_folder , '') }}"
 
-- debug: msg={{ tmp_domain }}
+- name: debug domain 
+  debug: msg={{ tmp_domain }}
   tags:
     - debug
     - never
@@ -18,22 +19,23 @@
 - set_fact:
     the_domain: "{{ tmp_domain.split('/')[1] | lower }}"
 
-- debug: msg={{ the_domain }}
-  tags:
-    - debug
-    - never
-
 - name: prepare TXT record selector
   shell: cat "{{ item.stdout }}" | cut -f1
   register: record_selector
 
-- debug: var=record_selector.stdout_lines
+- name: debug domain selector
+  debug: 
+    msg: "{{ record_selector.stdout_lines }}"
   tags:
     - debug
     - never
 
 - name: prerepare TXT record value
-  shell: cat "{{ item.stdout }}" | tr -d '\n[:space:]' | cut -d'"' -f2,3,4 | tr -d '"'
+  shell: |
+    set -o pipefail
+    cat "{{ item.stdout }}" | tr -d '\n[:space:]' | cut -d'"' -f2,3,4 | tr -d '"'
+  args:
+    executable: /bin/bash
   register: record_value
 
 - debug: var=record_value.stdout
