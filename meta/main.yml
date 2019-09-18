@@ -1,6 +1,7 @@
 galaxy_info:
   author: Marek Krasnowski
-  description: 
+  description: Configure dkim keys and KeyTable and SingingKeys (opendkim)a for give list of domains. If enabled DNS TXT records can be added to Cloudflare DNS service
+
   company: Lan Projekt sp z o.o.
 
   # If the issue tracker for your role is not on github, uncomment the
