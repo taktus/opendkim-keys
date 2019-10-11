@@ -29,7 +29,6 @@
   tags:
     - debug
     - never
-
 - name: prerepare TXT record value
   shell: |
     set -o pipefail
@@ -40,7 +39,7 @@
 
 - name: debug the domain
   debug: 
-    msg: " {{ the_domain}}
+    msg: "{{ the_domain }}"
   tags:
     - debug
     - never

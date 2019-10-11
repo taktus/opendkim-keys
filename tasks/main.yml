@@ -48,9 +48,10 @@
   when: the_genkey.rc != 0
 
 - name: Generate signing keys
-  shell: |
-      set -o pipefail
-      "{{ the_genkey.stdout  }} -s {{ item.selector | default(opendkim_domain_selector) }} -d {{ item.name }} -b {{ item.key_bits | default(opendkim_key_bits) }} -D {{ opendkim_keys_folder }}/{{ item.name }}"
+  # shell: |
+  #  set -o pipefail
+  #  "{{ the_genkey.stdout  }} -s {{ item.selector | default(opendkim_domain_selector) }} -d {{ item.name }} -b {{ item.key_bits | default(opendkim_key_bits) }} -D {{ opendkim_keys_folder }}/{{ item.name }}"
+  command: "{{ the_genkey.stdout  }} -s {{ item.selector | default(opendkim_domain_selector) }} -d {{ item.name }} -b {{ item.key_bits | default(opendkim_key_bits) }} -D {{ opendkim_keys_folder }}/{{ item.name }}"
   args:
     creates: "{{ opendkim_keys_folder }}/{{ item.name }}/{{ item.selector | default(opendkim_domain_selector) }}.private"
     executable: /bin/bash
