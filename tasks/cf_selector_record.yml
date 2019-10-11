@@ -38,14 +38,14 @@
   register: record_value
 
 - name: debug the domain
-  debug: 
+  debug:
     msg: "{{ the_domain }}"
   tags:
     - debug
     - never
 
 - name: debug record_value.stdout
-  debug: 
+  debug:
     msg: "{{ record_value.stdout }}"
   tags:
     - debug
