@@ -1,7 +1,6 @@
 galaxy_info:
   author: Marek Krasnowski
   description: Configure dkim keys and KeyTable and SingingKeys (opendkim)a for give list of domains. If enabled DNS TXT records can be added to Cloudflare DNS service
-
   company: Lan Projekt sp z o.o.
 
   # If the issue tracker for your role is not on github, uncomment the
@@ -17,7 +16,6 @@ galaxy_info:
   # - CC-BY-4.0
 
   license: BSD-3-Clause
-
   min_ansible_version: 2.7
 
   # If this a Container Enabled role, provide the minimum Ansible Container version.
@@ -63,7 +61,5 @@ galaxy_info:
    - cloudflare
 
   dependencies: []
-
   # List your role dependencies here, one per line. Be sure to remove the '[]' above,
   # if you add dependencies to this list.
-
