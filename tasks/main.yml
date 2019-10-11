@@ -54,7 +54,6 @@
   command: "{{ the_genkey.stdout  }} -s {{ item.selector | default(opendkim_domain_selector) }} -d {{ item.name }} -b {{ item.key_bits | default(opendkim_key_bits) }} -D {{ opendkim_keys_folder }}/{{ item.name }}"
   args:
     creates: "{{ opendkim_keys_folder }}/{{ item.name }}/{{ item.selector | default(opendkim_domain_selector) }}.private"
-    executable: /bin/bash
   with_flattened:
      - "{{ opendkim_domains }}"
   when: ( item.state is defined and item.state != 'absent' ) or ( item.state is undefined and opendkim_domain_state != 'absent' )
