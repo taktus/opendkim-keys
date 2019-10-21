@@ -32,7 +32,8 @@
 - name: prerepare TXT record value
   shell: |
     set -o pipefail
-    cat "{{ item.stdout }}" | tr -d '\n[:space:]' | cut -d'"' -f2,3,4 | tr -d '"'
+    cat "{{ item.stdout }}" | tr -d '\n[:space:]' | sed s#^.*\(\"## | sed s#\"\).*## | tr -d '"'
+
   args:
     executable: /bin/bash
   register: record_value
