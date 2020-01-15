@@ -31,7 +31,7 @@
   file:
      path: "{{ opendkim_keys_folder }}/{{ item.name }}"
      state: directory
-     owner: opendkim
+     owner: root
      mode: 0700
   with_flattened:
      - "{{ opendkim_domains }}"
@@ -62,7 +62,7 @@
   file:
     path: "{{ opendkim_keys_folder }}/{{ item.name }}"
     recurse: true
-    owner: opendkim
+    owner: root
   with_flattened:
      - "{{ opendkim_domains }}"
   when: ( item.state is defined and item.state != 'absent' ) or ( item.state is undefined and opendkim_domain_state != 'absent' )
